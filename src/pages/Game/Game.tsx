@@ -8,96 +8,106 @@ const NewGame = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    watch,
+    formState: {},
   } = useForm();
+  const watchDifficulty = watch("difficulty", false);
 
   const formSubmit = async (data: any) => {
     setQuestions(await fetchQuestions(data.difficulty));
   };
 
+  const handleChange = () => {
+    console.log("hello");
+  };
+
   useEffect(() => {
     console.log(questions);
-  }, [questions]);
+  }, [, questions]);
 
   return (
     <div className="flex items-center flex-col">
-      <p className="m-5">Please select the difficulty you would like to play</p>
-      <form onSubmit={handleSubmit((data) => formSubmit(data))}>
-        <div className="">
-          <input
-            className="sr-only peer"
-            id="random"
-            value=""
-            type="radio"
-            {...register("difficulty")}
-          />
-          <label
-            className="m-4 p-4 text-xl text-white border-2 border-pink-500 bg-pink-500 rounded-xl transition-all ease hover:border-black duration-200 peer-checked:border-black "
-            htmlFor="random"
-          >
-            Random
-          </label>
+      <p className="m-8 text-xl">
+        Please select the difficulty you would like to play below.
+      </p>
+      <form
+        onSubmit={handleSubmit((data) => formSubmit(data))}
+        className="flex flex-col items-center"
+      >
+        <div className="flex">
+          <div className="w-32 mx-4">
+            <input
+              className="sr-only peer"
+              id="random"
+              value="random"
+              type="radio"
+              {...register("difficulty")}
+            />
+            <label
+              className="p-4 text-xl text-white border-2 border-pink-500 bg-pink-500 rounded-xl transition-all ease flex justify-center hover:border-black cursor-pointer duration-200 peer-checked:border-black "
+              htmlFor="random"
+            >
+              Random
+            </label>
+          </div>
+          <div className="w-32 mx-4">
+            <input
+              className="sr-only peer"
+              id="easy"
+              value="easy"
+              type="radio"
+              {...register("difficulty")}
+            />
+            <label
+              htmlFor="easy"
+              className="p-4 text-xl text-white border-2 border-green-600 bg-green-600 rounded-xl transition-all ease flex justify-center hover:border-black duration-200 peer-checked:border-black"
+            >
+              Easy
+            </label>
+          </div>
+          <div className="w-32 mx-4">
+            <input
+              className="sr-only peer"
+              id="medium"
+              value="medium"
+              type="radio"
+              {...register("difficulty")}
+            />
+            <label
+              className="p-4 text-xl text-white border-2 border-orange-400 bg-orange-400 rounded-xl transition-all ease flex justify-center hover:border-black duration-200 peer-checked:border-black"
+              htmlFor="medium"
+            >
+              Medium
+            </label>
+          </div>
+          <div className="w-32 mx-4">
+            <input
+              className="sr-only peer"
+              id="hard"
+              value="hard"
+              type="radio"
+              {...register("difficulty")}
+            />
+            <label
+              className="p-4 text-xl text-white border-2 border-red-600 bg-red-600 rounded-xl transition-all ease flex justify-center hover:border-black duration-200 peer-checked:border-black"
+              htmlFor="hard"
+            >
+              Hard
+            </label>
+          </div>
         </div>
-        <div>
-          <input
-            className="sr-only peer"
-            id="easy"
-            value="easy"
-            type="radio"
-            {...register("difficulty")}
-          />
-          <label
-            htmlFor="easy"
-            className="m-4 p-4 text-xl text-white border-2 border-green-600 bg-green-600 rounded-xl transition-all ease  hover:border-black duration-200 peer-checked:border-black"
+        {!watchDifficulty ? (
+          <div className="mt-12 py-2 px-12 border-2 border-sky-900 rounded-xl bg-sky-900 text-white text-xl hover:border-black cursor-not-allowed ">
+            New Game
+          </div>
+        ) : (
+          <button
+            className="mt-12 py-2 px-12 border-2 border-sky-900 rounded-xl bg-sky-900 text-white text-xl hover:border-black cursor-pointer "
+            type="submit"
           >
-            easy
-          </label>
-        </div>
-        <div>
-          <input
-            className="sr-only peer"
-            id="medium"
-            value="medium"
-            type="radio"
-            {...register("difficulty")}
-          />
-          <label
-            className="m-4 p-4 text-xl text-white border-2 border-orange-400 bg-orange-400 rounded-xl transition-all ease  hover:border-black duration-200 peer-checked:border-black"
-            htmlFor="medium"
-          >
-            Medium
-          </label>
-        </div>
-        <div>
-          <input
-            className="sr-only peer"
-            id="hard"
-            value="hard"
-            type="radio"
-            {...register("difficulty")}
-          />
-          <label
-            className="m-4 p-4 text-xl text-white border-2 border-red-600 bg-red-600 rounded-xl transition-all ease  hover:border-black duration-200 peer-checked:border-black"
-            htmlFor="hard"
-          >
-            Hard
-          </label>
-        </div>
-        <button className="border" type="submit">
-          New Game
-        </button>
-        {/* {questions.map((question) => (
-          <>
-            <p>{question.question}</p>
-            <p>{question.correct_answer}</p>
-            {question.incorrect_answers.map((item) => (
-              <>
-                <p>item</p>
-                <p>{item}</p>
-              </>
-            ))}
-          </>
-        ))} */}
+            New Game
+          </button>
+        )}
       </form>
     </div>
   );
