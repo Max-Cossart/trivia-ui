@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { decode } from "html-entities";
 
 interface QuestionCardProps {
   category: string;
@@ -24,12 +25,8 @@ const QuestionCard = ({
 
   return (
     <div className="max-w-3xl flex flex-col items-center mx-auto my-12 border overflow-hidden border-sky-900 rounded-xl p-8">
-      <p className="text-xl">{category}</p>
-      <p className="text-xl p-4">
-        {question && question.includes("&quot;")
-          ? question.replace(/&quot;/g, '"')
-          : question}
-      </p>
+      <p className="text-xl">{decode(category)}</p>
+      <p className="text-xl p-4">{decode(question)}</p>
       <form
         onSubmit={handleSubmit((data) => formSubmit(data))}
         className="flex flex-col items-center"
@@ -44,7 +41,7 @@ const QuestionCard = ({
               {...register("answerSubmitted")}
             />
             <label htmlFor={correctAnswer} className="text-xl">
-              {correctAnswer}
+              {decode(correctAnswer)}
             </label>
           </div>
           {incorrectAnswers?.map((item) => (
@@ -57,7 +54,7 @@ const QuestionCard = ({
                 {...register("answerSubmitted")}
               />
               <label htmlFor={item} className="text-xl">
-                {item}
+                {decode(item)}
               </label>
             </div>
           ))}
