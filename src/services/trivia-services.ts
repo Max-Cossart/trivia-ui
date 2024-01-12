@@ -1,4 +1,4 @@
-export const fetchQuestions = async (difficulty: any) => {
+export const fetchQuestions = async (difficulty: string) => {
   if (difficulty == "random") {
     const response = await fetch("https://opentdb.com/api.php?amount=10");
     const data = await response.json();

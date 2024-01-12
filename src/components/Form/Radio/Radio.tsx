@@ -2,9 +2,10 @@ interface Props {
   register: any;
   label: string;
   name: string;
-  color: string;
+  border: string;
+  background: string;
 }
-const Radio = ({ register, label, name, color }: Props) => {
+const Radio = ({ register, label, name, border, background }: Props) => {
   return (
     <div className="w-32 mx-4">
       <input
@@ -15,7 +16,7 @@ const Radio = ({ register, label, name, color }: Props) => {
         {...register("difficulty")}
       />
       <label
-        className={`p-4 text-xl text-white border-2 border-${color} bg-${color} rounded-xl transition-all ease flex justify-center hover:border-black cursor-pointer duration-200 peer-checked:border-black`}
+        className={`p-4 text-xl text-white border-2 ${border} ${background} rounded-xl transition-all ease flex justify-center cursor-pointer hover:border-black  duration-200 peer-checked:border-black`}
         htmlFor={name}
       >
         {label}
