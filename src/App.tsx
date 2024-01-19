@@ -12,6 +12,11 @@ export interface Question {
   type: string;
 }
 
+export interface Category {
+  id: number;
+  name: string;
+}
+
 function App() {
   return (
     <>

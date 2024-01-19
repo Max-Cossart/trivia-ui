@@ -2,17 +2,29 @@ import { decode } from "html-entities";
 import { Question } from "../App";
 import { randomiseAnswers } from "./randomise-answers";
 
-export const fetchQuestions = async (difficulty: string) => {
+export const fetchQuestions = async (difficulty: string, category: string) => {
   let data;
-  if (difficulty == "random") {
+
+  if (difficulty == "random" && category == "") {
     const response = await fetch("https://opentdb.com/api.php?amount=10");
     data = await response.json();
-  } else {
+  } else if (difficulty != "random" && category == "") {
     const response = await fetch(
       `https://opentdb.com/api.php?amount=10&difficulty=${difficulty}`
     );
     data = await response.json();
+  } else if (difficulty == "random" && category != "") {
+    const response = await fetch(
+      `https://opentdb.com/api.php?amount=10&category=${category}`
+    );
+    data = await response.json();
+  } else if (difficulty != "random" && category != "") {
+    const response = await fetch(
+      `https://opentdb.com/api.php?amount=10&category=${category}&difficulty=${difficulty}`
+    );
+    data = await response.json();
   }
+
   const decodedData = data.results.map((item: Question) => {
     return {
       ...item,
@@ -27,4 +39,11 @@ export const fetchQuestions = async (difficulty: string) => {
   });
   console.log(decodedData);
   return decodedData;
+};
+
+export const fetchCategories = async () => {
+  let data;
+  const response = await fetch("https://opentdb.com/api_category.php");
+  data = await response.json();
+  return data.trivia_categories;
 };

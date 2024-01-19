@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import Button from "../Button/Button";
 import Answers from "../Answers/Answers";
-import { useEffect } from "react";
 
 export interface QuestionCardProps {
   category: string;
@@ -22,10 +21,6 @@ const QuestionCard = ({
   const formSubmit = (data: any) => {
     setSubmittedAnswer(data.answerSubmitted);
   };
-
-  useEffect(() => {
-    console.log(watchAnswer);
-  }, [question]);
 
   return (
     <div className="max-w-3xl flex flex-col items-center mx-auto my-12 border overflow-hidden border-sky-900 rounded-xl p-8">

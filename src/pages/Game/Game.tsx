@@ -1,11 +1,15 @@
 import { useForm } from "react-hook-form";
-import { fetchQuestions } from "../../services/trivia-services";
+import {
+  fetchCategories,
+  fetchQuestions,
+} from "../../services/trivia-services";
 import { useEffect, useState } from "react";
 import Radio from "../../components/Form/Radio/Radio";
 import QuestionCard from "../../components/QuestionCard/QuestionCard";
 import Button from "../../components/Button/Button";
 import { Question } from "../../App";
 import Finish from "../../components/Finish/Finish";
+import Select from "../../components/Form/Select/Select";
 
 const NewGame = () => {
   const [questions, setQuestions] = useState([]);
@@ -13,14 +17,24 @@ const NewGame = () => {
   const [currentQuestion, setCurrentQuestion] = useState<Question>(
     questions[questionIndex]
   );
+  const [category, setCategory] = useState([]);
   const [submittedAnswer, setSubmittedAnswer] = useState("");
   const [lost, setLost] = useState(false);
-
   const { register, handleSubmit, watch } = useForm();
   const watchDifficulty = watch("difficulty", false);
 
   const formSubmit = async (data: any) => {
-    setQuestions(await fetchQuestions(data.difficulty));
+    setQuestions(await fetchQuestions(data.difficulty, data.category));
+  };
+
+  const makeIt = async () => {
+    setCategory(await fetchCategories());
+  };
+
+  const tryAgain = () => {
+    setQuestionIndex(0);
+    setLost(false);
+    setSubmittedAnswer("");
   };
 
   useEffect(() => {
@@ -28,19 +42,16 @@ const NewGame = () => {
   }, [questions, questionIndex]);
 
   useEffect(() => {
+    makeIt();
+  }, []);
+
+  useEffect(() => {
     if (submittedAnswer != "") {
-      console.log(questionIndex);
       submittedAnswer == currentQuestion?.correct_answer
         ? setQuestionIndex(questionIndex + 1)
         : setLost(true);
     }
   }, [submittedAnswer]);
-
-  const tryAgain = () => {
-    setQuestionIndex(0);
-    setLost(false);
-    setSubmittedAnswer("");
-  };
 
   return questions.length == 0 ? (
     <div className="flex items-center flex-col">
@@ -58,7 +69,6 @@ const NewGame = () => {
             name="random"
             border="border-pink-500"
             background="bg-pink-500"
-            type="difficulty"
           />
           <Radio
             register={register}
@@ -82,6 +92,18 @@ const NewGame = () => {
             background="bg-red-600"
           />
         </div>
+        <p className="m-8 text-xl">
+          Please select a category from the list below
+        </p>
+        <Select register={register} category={category} />
+        {/* <select {...register("category")}>
+          <option value="">Random</option>
+          {category?.map((category: Category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select> */}
         {!watchDifficulty ? (
           <div className="mt-12 py-2 px-12 border-2 border-sky-900 rounded-xl bg-sky-900 text-white text-xl hover:border-black cursor-not-allowed ">
             New Game
@@ -107,7 +129,7 @@ const NewGame = () => {
           message="Game Over, you scored"
           emoji="😔"
         />
-        <div className="flex flex-row w-1/4 justify-between">
+        <div className="flex flex-row w-1/3 justify-between">
           <Button type="onClick" text="Try Again" method={tryAgain} />
           <Button
             type="onClick"
