@@ -31,8 +31,7 @@ const NewGame = () => {
     setCategory(await fetchCategories());
   };
 
-  const tryAgain = () => {
-    setQuestionIndex(0);
+  const keepGoing = () => {
     setLost(false);
     setSubmittedAnswer("");
   };
@@ -130,7 +129,7 @@ const NewGame = () => {
           emoji="😔"
         />
         <div className="flex flex-row w-1/3 justify-between">
-          <Button type="onClick" text="Try Again" method={tryAgain} />
+          <Button type="onClick" text="Keep Going" method={keepGoing} />
           <Button
             type="onClick"
             text="New Game"
