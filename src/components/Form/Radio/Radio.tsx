@@ -4,9 +4,8 @@ interface Props {
   name: string;
   border: string;
   background: string;
-  type: string;
 }
-const Radio = ({ register, label, name, border, background, type }: Props) => {
+const Radio = ({ register, label, name, border, background }: Props) => {
   return (
     <div className="w-32 mx-4">
       <input

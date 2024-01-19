@@ -5,12 +5,13 @@ import Radio from "../../components/Form/Radio/Radio";
 import QuestionCard from "../../components/QuestionCard/QuestionCard";
 import Button from "../../components/Button/Button";
 import { Question } from "../../App";
+import Finish from "../../components/Finish/Finish";
 
 const NewGame = () => {
   const [questions, setQuestions] = useState([]);
-  const [count, setCount] = useState(0);
+  const [questionIndex, setQuestionIndex] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState<Question>(
-    questions[count]
+    questions[questionIndex]
   );
   const [submittedAnswer, setSubmittedAnswer] = useState("");
   const [lost, setLost] = useState(false);
@@ -23,20 +24,20 @@ const NewGame = () => {
   };
 
   useEffect(() => {
-    setCurrentQuestion(questions[count]);
-  }, [questions, count]);
+    setCurrentQuestion(questions[questionIndex]);
+  }, [questions, questionIndex]);
 
   useEffect(() => {
     if (submittedAnswer != "") {
-      console.log(count);
+      console.log(questionIndex);
       submittedAnswer == currentQuestion?.correct_answer
-        ? setCount(count + 1)
+        ? setQuestionIndex(questionIndex + 1)
         : setLost(true);
     }
   }, [submittedAnswer]);
 
   const tryAgain = () => {
-    setCount(0);
+    setQuestionIndex(0);
     setLost(false);
     setSubmittedAnswer("");
   };
@@ -65,7 +66,6 @@ const NewGame = () => {
             name="easy"
             border="border-green-600"
             background="bg-green-600"
-            type="difficulty"
           />
           <Radio
             register={register}
@@ -73,7 +73,6 @@ const NewGame = () => {
             name="medium"
             border="border-orange-400"
             background="bg-orange-400"
-            type="difficulty"
           />
           <Radio
             register={register}
@@ -81,7 +80,6 @@ const NewGame = () => {
             name="hard"
             border="border-red-600"
             background="bg-red-600"
-            type="difficulty"
           />
         </div>
         {!watchDifficulty ? (
@@ -93,35 +91,45 @@ const NewGame = () => {
         )}
       </form>
     </div>
-  ) : count != 10 ? (
+  ) : questionIndex != 10 ? (
     lost != true ? (
       <QuestionCard
         category={currentQuestion?.category}
         question={currentQuestion?.question}
-        correctAnswer={currentQuestion?.correct_answer}
-        incorrectAnswers={currentQuestion?.incorrect_answers}
+        allAnswers={currentQuestion?.allAnswers}
         setSubmittedAnswer={setSubmittedAnswer}
+        submittedAnswer={submittedAnswer}
       />
     ) : (
-      <>
-        <p>You lose</p>
-        <Button type="onClick" text="Try Again" method={tryAgain} />
-        <Button
-          type="onClick"
-          text="New Game"
-          method={() => window.location.reload()}
+      <div className="flex flex-col w-full items-center">
+        <Finish
+          questionIndex={questionIndex}
+          message="Game Over, you scored"
+          emoji="😔"
         />
-      </>
+        <div className="flex flex-row w-1/4 justify-between">
+          <Button type="onClick" text="Try Again" method={tryAgain} />
+          <Button
+            type="onClick"
+            text="New Game"
+            method={() => window.location.reload()}
+          />
+        </div>
+      </div>
     )
   ) : (
-    <>
-      <p>congrats</p>
+    <div className="flex flex-col items-center">
+      <Finish
+        questionIndex={questionIndex}
+        message="Congratulations, You won"
+        emoji="🥳"
+      />
       <Button
         type="onClick"
         text="New Game"
         method={() => window.location.reload()}
       />
-    </>
+    </div>
   );
 };
 
