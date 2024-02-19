@@ -2,6 +2,8 @@
 
 This is a trivia game that uses the [Open Trivia Database](https://opentdb.com/) API to source the questions and answers.
 
+You can see the live project [Here](https://trivia-4axjh1rne-max-cossart.vercel.app/)!
+
 ## Table of Contents
 
 - [Features](#features)
@@ -61,8 +63,10 @@ This is a trivia game that uses the [Open Trivia Database](https://opentdb.com/)
 ## Known Issues
 
 - When a true or false follows another the same answer can't be selected again.
+- I have not you made it responsive so it does not work on small screens.
 
 ## Future Goals
 
 - Fix the bug listed above.
 - Add the timer for each question as the bonus states.
+- Make the app playable on mobile phone.
