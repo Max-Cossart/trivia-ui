@@ -19,7 +19,7 @@ const NewGame = () => {
   );
   const [category, setCategory] = useState([]);
   const [submittedAnswer, setSubmittedAnswer] = useState("");
-  const [lost, setLost] = useState(false);
+  const [lost, setLost] = useState(true);
   const { register, handleSubmit, watch } = useForm();
   const watchDifficulty = watch("difficulty", false);
 
@@ -95,14 +95,7 @@ const NewGame = () => {
           Please select a category from the list below
         </p>
         <Select register={register} category={category} />
-        {/* <select {...register("category")}>
-          <option value="">Random</option>
-          {category?.map((category: Category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select> */}
+
         {!watchDifficulty ? (
           <div className="mt-12 py-2 px-12 border-2 border-sky-900 rounded-xl bg-sky-900 text-white text-xl hover:border-black cursor-not-allowed ">
             New Game
